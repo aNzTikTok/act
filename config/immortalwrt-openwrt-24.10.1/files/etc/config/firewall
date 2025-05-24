@@ -139,7 +139,3 @@ config include 'passwall2_server'
 	option path '/var/etc/passwall2_server.include'
 	option reload '1'
 
-config include 'openclash'
-	option type 'script'
-	option path '/var/etc/openclash.include'
-
