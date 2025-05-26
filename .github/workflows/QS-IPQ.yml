@@ -120,8 +120,8 @@ jobs:
           cd openwrt/
           grep -q "CONFIG_TARGET_qualcommax_ipq807x_DEVICE_arcadyan_aw1000=y" .config || exit 1
           echo -e "$(nproc) thread compile"
-          # make -j$(nproc) || make -j$(nproc) V=s
-          (make -j$(nproc) V=s || echo "Build failed with error code $?" ) 2>&1 | tee build_error.txt
+          make -j$(nproc) || make -j$(nproc) V=s
+          # (make -j$(nproc) V=s || echo "Build failed with error code $?" ) 2>&1 | tee build_error.txt
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Check space usage
@@ -144,12 +144,6 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> "$GITHUB_OUTPUT"
 
-      - name: Upload firmware directory
-        uses: actions/upload-artifact@main
-        if: steps.organize.outputs.status == 'success' && !cancelled()
-        with:
-          name: OpenWrt_firmware_${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
-          path: ${{ env.FIRMWARE }}
 
       - name: Generate release tag
         id: tag
