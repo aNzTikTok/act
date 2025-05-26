@@ -120,7 +120,8 @@ jobs:
           cd openwrt/
           grep -q "CONFIG_TARGET_qualcommax_ipq807x_DEVICE_arcadyan_aw1000=y" .config || exit 1
           echo -e "$(nproc) thread compile"
-          make -j$(nproc) || make -j$(nproc) V=s
+          # make -j$(nproc) || make -j$(nproc) V=s
+          (make -j$(nproc) V=s || echo "Build failed with error code $?" ) 2>&1 | tee build_error.txt
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Check space usage
@@ -172,6 +173,15 @@ jobs:
           echo "### ⚠️ **Important Note**": >> release.txt
           echo "Please use this firmware at your own risk. Flashing custom firmware can potentially brick your device if not done properly. The developers are not responsible for any damage or data loss that may occur." >> release.txt
          
+      - name: Upload build error log if failed
+        uses: softprops/action-gh-release@v1
+        if: failure() && env.UPLOAD_RELEASE == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: release.txt
+          files: openwrt/build_error.txt
 
       - name: Upload firmware to release
         uses: softprops/action-gh-release@v1
