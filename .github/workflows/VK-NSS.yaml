@@ -8,7 +8,7 @@ on:
 env:
   ETC_URL:  config/immortalwrt-nss-vk/files
   REPO_URL: https://github.com/VIKINGYFY/immortalwrt.git
-  REPO_BRANCH: main
+  REPO_BRANCH: test
   FEEDS_CONF: config/immortalwrt-nss-vk/feeds.conf.default
   CONFIG_FILE: config/immortalwrt-nss-vk/.config
   PATH_SCRIPT_01: config/immortalwrt-nss-vk/01_path.sh
@@ -78,6 +78,9 @@ jobs:
 
       - name: Install feeds
         run: cd openwrt/ && ./scripts/feeds install -a
+
+      - name: Install wwan
+        run: cd openwrt/ && ./scripts/feeds install -a -p wwan
 
       - name: Load custom configuration
         run: |
