@@ -12,7 +12,6 @@ env:
   FEEDS_CONF: config/openwrt-ipq/feeds.conf.default
   CONFIG_FILE: config/openwrt-ipq/.config
   PATH_SCRIPT_01: config/openwrt-ipq/01_path.sh
-  PATH_SCRIPT_02: config/openwrt-ipq/02_path.sh
   PATH_MK: config/openwrt-ipq/version.mk
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
@@ -88,9 +87,6 @@ jobs:
         run: |
           [[ -d "files" ]] && mv -f files openwrt/files
           [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
-          chmod +x ${PATH_SCRIPT_02}
-          cd openwrt/
-          ${GITHUB_WORKSPACE}/${PATH_SCRIPT_02}
                   
       - name: Show loaded target device
         run: |
