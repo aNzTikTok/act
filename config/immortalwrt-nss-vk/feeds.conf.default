@@ -7,3 +7,4 @@ src-git routing https://github.com/openwrt/routing.git
 src-git telephony https://github.com/openwrt/telephony.git
 src-git video https://github.com/openwrt/video.git
 src-git custom_app https://github.com/intannajwa/custom-app.git
+
